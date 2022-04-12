@@ -7,7 +7,7 @@ import numpy
 
 # 根据给出的步长interval，创建一个差分序列，间隔12个数字相减
 def difference(dataset, interval=1):
-	diff = list()
+	diff = []
 	for i in range(interval, len(dataset)):
 		value = dataset[i] - dataset[i - interval]
 		diff.append(value)
@@ -22,13 +22,13 @@ def evaluate_arima_model(X, arima_order):
 	# prepare training dataset
 	X = X.astype('float32')
 	train_size = int(len(X) * 0.50)
-	train, test = X[0:train_size], X[train_size:]
-	history = [x for x in train]
+	train, test = X[:train_size], X[train_size:]
+	history = list(train)
 	# make predictions
-	predictions = list()
+	predictions = []
+	# difference data
+	months_in_year = 12
 	for t in range(len(test)):
-		# difference data
-		months_in_year = 12
 		diff = difference(history, months_in_year)
 		model = ARIMA(diff, order=arima_order)
 		model_fit = model.fit(trend='nc', disp=0)
@@ -38,8 +38,7 @@ def evaluate_arima_model(X, arima_order):
 		history.append(test[t])
 	# calculate out of sample error
 	mse = mean_squared_error(test, predictions)
-	rmse = sqrt(mse)
-	return rmse
+	return sqrt(mse)
 
 # 评估ARIMA模型的p，d和q值的组合，获取最小的RMSE数值
 def evaluate_models(dataset, p_values, d_values, q_values):
@@ -61,8 +60,8 @@ def evaluate_models(dataset, p_values, d_values, q_values):
 # load dataset
 series = Series.from_csv('dataset.csv')
 # evaluate parameters
-p_values = range(0, 7)
-d_values = range(0, 3)
-q_values = range(0, 7)
+p_values = range(7)
+d_values = range(3)
+q_values = range(7)
 warnings.filterwarnings("ignore")
 evaluate_models(series.values, p_values, d_values, q_values)

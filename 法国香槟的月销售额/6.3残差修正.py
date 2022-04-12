@@ -7,11 +7,9 @@ from math import sqrt
 
 # 根据给出的步长interval，创建一个差分序列，间隔12个数字相减
 def difference(dataset, interval=1):
-	diff = list()
-	for i in range(interval, len(dataset)):
-		value = dataset[i] - dataset[i - interval]
-		diff.append(value)
-	return diff
+	return [
+	    dataset[i] - dataset[i - interval] for i in range(interval, len(dataset))
+	]
 
 # 还原差分值
 def inverse_difference(history, yhat, interval=1):
@@ -23,14 +21,14 @@ series = Series.from_csv('dataset.csv')
 X = series.values
 X = X.astype('float32')
 train_size = int(len(X) * 0.50)
-train, test = X[0:train_size], X[train_size:]
+train, test = X[:train_size], X[train_size:]
 # walk-forward validation
-history = [x for x in train]
-predictions = list()
+history = list(train)
+predictions = []
 bias = 165.904728
+# difference data
+months_in_year = 12
 for i in range(len(test)):
-	# difference data
-	months_in_year = 12
 	diff = difference(history, months_in_year)
 	# predict
 	model = ARIMA(diff, order=(0,0,1))

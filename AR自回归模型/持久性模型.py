@@ -19,7 +19,7 @@ def model_persistence(x):
 	return x
 
 # walk-forward validation
-predictions = list()
+predictions = []
 for x in test_X:
 	yhat = model_persistence(x)
 	predictions.append(yhat)

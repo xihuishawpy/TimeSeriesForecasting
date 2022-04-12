@@ -11,11 +11,9 @@ ARIMA.__getnewargs__ = __getnewargs__
 
 # 计算差分序列
 def difference(dataset, interval=1):
-	diff = list()
-	for i in range(interval, len(dataset)):
-		value = dataset[i] - dataset[i - interval]
-		diff.append(value)
-	return diff
+	return [
+	    dataset[i] - dataset[i - interval] for i in range(interval, len(dataset))
+	]
 
 # load data
 series = Series.from_csv('dataset.csv')
