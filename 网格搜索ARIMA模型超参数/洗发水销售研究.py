@@ -8,19 +8,17 @@ from sklearn.metrics import mean_squared_error
 def evaluate_arima_model(X, arima_order):
 	# prepare training dataset
 	train_size = int(len(X) * 0.66)
-	train, test = X[0:train_size], X[train_size:]
-	history = [x for x in train]
+	train, test = X[:train_size], X[train_size:]
+	history = list(train)
 	# 进行预测
-	predictions = list()
+	predictions = []
 	for t in range(len(test)):
 		model = ARIMA(history, order=arima_order)
 		model_fit = model.fit(disp=0)
 		yhat = model_fit.forecast()[0]
 		predictions.append(yhat)
 		history.append(test[t])
-	# 计算样本的误差值
-	error = mean_squared_error(test, predictions)
-	return error
+	return mean_squared_error(test, predictions)
 
 # 评估ARIMA模型的p，d和q值的组合
 def evaluate_models(dataset, p_values, d_values, q_values):
@@ -45,7 +43,7 @@ def parser(x):
 series = read_csv('shampoo-sales.csv', header=0, parse_dates=[0], index_col=0, squeeze=True, date_parser=parser)
 # 评估参数
 p_values = [0, 1, 2, 4, 6, 8, 10]
-d_values = range(0, 3)
-q_values = range(0, 3)
+d_values = range(3)
+q_values = range(3)
 warnings.filterwarnings("ignore")
 evaluate_models(series.values, p_values, d_values, q_values)

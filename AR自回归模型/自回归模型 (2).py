@@ -14,7 +14,7 @@ coef = model_fit.params
 # walk forward over time steps in test
 history = train[len(train)-window:]
 history = [history[i] for i in range(len(history))]
-predictions = list()
+predictions = []
 for t in range(len(test)):
 	length = len(history)
 	lag = [history[i] for i in range(length-window,length)]

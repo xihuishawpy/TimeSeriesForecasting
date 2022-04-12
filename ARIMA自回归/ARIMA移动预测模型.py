@@ -10,9 +10,9 @@ def parser(x):
 series = read_csv('shampoo-sales.csv', header=0, parse_dates=[0], index_col=0, squeeze=True, date_parser=parser)
 X = series.values
 size = int(len(X) * 0.66)
-train, test = X[0:size], X[size:len(X)]
-history = [x for x in train]
-predictions = list()
+train, test = X[:size], X[size:]
+history = list(train)
+predictions = []
 for t in range(len(test)):
 	model = ARIMA(history, order=(5,1,0))
 	model_fit = model.fit(disp=0)

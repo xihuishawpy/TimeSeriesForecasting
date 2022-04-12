@@ -7,10 +7,10 @@ series = Series.from_csv('dataset.csv')
 X = series.values
 X = X.astype('float32')
 train_size = int(len(X) * 0.50)
-train, test = X[0:train_size], X[train_size:]
+train, test = X[:train_size], X[train_size:]
 # walk-forward validation
-history = [x for x in train]
-predictions = list()
+history = list(train)
+predictions = []
 for i in range(len(test)):
     # predict
     yhat = history[-1]

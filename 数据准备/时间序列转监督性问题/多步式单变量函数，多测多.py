@@ -20,7 +20,7 @@ def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
 		cols.append(df.shift(i))
 		names += [('var%d(t-%d)' % (j+1, i)) for j in range(n_vars)]
 	# forecast sequence (t, t+1, ... t+n)
-	for i in range(0, n_out):
+	for i in range(n_out):
 		cols.append(df.shift(-i))
 		if i == 0:
 			names += [('var%d(t)' % (j+1)) for j in range(n_vars)]
@@ -35,6 +35,6 @@ def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
 	return agg
 
 # 单变量 步长为2 预测两步
-values = [x for x in range(10)]
+values = list(range(10))
 data = series_to_supervised(values, 2, 2)
 print(data)

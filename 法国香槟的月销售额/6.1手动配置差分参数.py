@@ -5,7 +5,7 @@ from matplotlib import pyplot
 
 # 根据给出的步长interval，创建一个差分序列，间隔12个数字相减
 def difference(dataset, interval=1):
-    diff = list()
+    diff = []
     for i in range(interval, len(dataset)):
         value = dataset[i] - dataset[i - interval]
         diff.append(value)

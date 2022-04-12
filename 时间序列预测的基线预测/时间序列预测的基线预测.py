@@ -27,7 +27,7 @@ def model_persistence(x):
 	return x
 
 # 用model_persistence函数模拟预测模型，对预测结果和真实值做残差比较，检验结果
-predictions = list()
+predictions = []
 for x in test_X:
 	yhat = model_persistence(x)
 	predictions.append(yhat)
@@ -36,6 +36,6 @@ print('Test MSE: %.3f' % test_score)
 
 # 画出结果
 pyplot.plot(train_y)
-pyplot.plot([None for i in train_y] + [x for x in test_y])
-pyplot.plot([None for i in train_y] + [x for x in predictions])
+pyplot.plot([None for _ in train_y] + list(test_y))
+pyplot.plot([None for _ in train_y] + list(predictions))
 pyplot.show()

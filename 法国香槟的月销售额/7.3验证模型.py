@@ -8,11 +8,10 @@ import numpy
 
 # create a differenced series
 def difference(dataset, interval=1):
-    diff = list()
-    for i in range(interval, len(dataset)):
-        value = dataset[i] - dataset[i - interval]
-        diff.append(value)
-    return diff
+    return [
+        dataset[i] - dataset[i - interval]
+        for i in range(interval, len(dataset))
+    ]
 
 # invert differenced value
 def inverse_difference(history, yhat, interval=1):
@@ -21,24 +20,22 @@ def inverse_difference(history, yhat, interval=1):
 # load and prepare datasets
 dataset = Series.from_csv('dataset.csv')
 X = dataset.values.astype('float32')
-history = [x for x in X]
-months_in_year = 12
+history = list(X)
 validation = Series.from_csv('validation.csv')
 y = validation.values.astype('float32')
 # load model
 model_fit = ARIMAResults.load('model.pkl')
 bias = numpy.load('model_bias.npy')
-# make first prediction
-predictions = list()
 yhat = float(model_fit.forecast()[0])
+months_in_year = 12
 yhat = bias + inverse_difference(history, yhat, months_in_year)
-predictions.append(yhat)
+predictions = [yhat]
 history.append(y[0])
 print('>Predicted=%.3f, Expected=%3.f' % (yhat, y[0]))
+# 差分
+months_in_year = 12
 # rolling forecasts
 for i in range(1, len(y)):
-    # 差分
-    months_in_year = 12
     diff = difference(history, months_in_year)
     # predict
     # 配置模型参数
